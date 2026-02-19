@@ -158,6 +158,7 @@ function ProductModal({ product, onClose }: {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 20 }}
                 transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+                className="modal-wrapper"
                 style={{ position: 'fixed', inset: '20px', zIndex: 101, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
             >
                 <div className="card product-modal-card" style={{ position: 'relative', width: '100%', maxWidth: '900px', maxHeight: '90vh', overflow: 'hidden', padding: 0 }}>
@@ -168,32 +169,29 @@ function ProductModal({ product, onClose }: {
                         ✕
                     </button>
                     <div className="product-modal-grid">
-                        <div style={{ position: 'relative', overflow: 'hidden' }}>
+                        <div className="modal-image-container">
                             <img
                                 src={product.image}
                                 alt={product.name}
                                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                             />
                         </div>
-                        <div style={{ padding: '28px 28px', display: 'flex', flexDirection: 'column', justifyContent: 'center', overflowY: 'auto' }}>
-                            <p className="text-accent" style={{ fontSize: '11px', fontWeight: 600, letterSpacing: '0.1em', marginBottom: '6px' }}>
-                                {product.category.toUpperCase()}
-                            </p>
-                            <h2 style={{ fontFamily: "'Fraunces', serif", fontSize: '22px', fontWeight: 600, marginBottom: '4px' }}>{product.name}</h2>
-                            <p className="text-accent" style={{ fontSize: '22px', fontWeight: 700, marginBottom: '10px' }}>${product.price}</p>
-                            <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '12px' }}>
-                                {product.tags.map(tag => (
-                                    <span key={tag} className="category-tag">{tag}</span>
-                                ))}
-                            </div>
-                            <div style={{ display: 'flex', gap: '24px', padding: '10px 14px', background: 'var(--color-cream-dark)', borderRadius: 'var(--radius-md)', marginBottom: '14px', fontSize: '13px' }}>
-                                <div>
-                                    <span className="text-muted" style={{ fontSize: '10px', fontWeight: 600, letterSpacing: '0.05em' }}>DIMENSIONS </span>
-                                    <span style={{ fontWeight: 500 }}>{product.dimensions}</span>
-                                </div>
-                                <div>
-                                    <span className="text-muted" style={{ fontSize: '10px', fontWeight: 600, letterSpacing: '0.05em' }}>WEIGHT </span>
-                                    <span style={{ fontWeight: 500 }}>{product.weight}</span>
+                        <div className="modal-details">
+                            <div>
+                                <p className="text-accent" style={{ fontSize: '11px', fontWeight: 600, letterSpacing: '0.1em', marginBottom: '4px' }}>
+                                    {product.category.toUpperCase()}
+                                </p>
+                                <h2 style={{ fontFamily: "'Fraunces', serif", fontSize: '22px', fontWeight: 600, marginBottom: '4px' }}>{product.name}</h2>
+                                <p className="text-accent" style={{ fontSize: '22px', fontWeight: 700, marginBottom: '8px' }}>${product.price}</p>
+                                <div style={{ display: 'flex', gap: '24px', padding: '8px 14px', background: 'var(--color-cream-dark)', borderRadius: 'var(--radius-md)', marginBottom: '8px', fontSize: '13px' }}>
+                                    <div>
+                                        <span className="text-muted" style={{ fontSize: '10px', fontWeight: 600, letterSpacing: '0.05em' }}>DIMENSIONS </span>
+                                        <span style={{ fontWeight: 500 }}>{product.dimensions}</span>
+                                    </div>
+                                    <div>
+                                        <span className="text-muted" style={{ fontSize: '10px', fontWeight: 600, letterSpacing: '0.05em' }}>WEIGHT </span>
+                                        <span style={{ fontWeight: 500 }}>{product.weight}</span>
+                                    </div>
                                 </div>
                             </div>
                             <Link
