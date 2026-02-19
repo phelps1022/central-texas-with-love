@@ -98,44 +98,91 @@ function Layout({ children }: { children: React.ReactNode }) {
           </div>
         </div>
 
-        {/* Mobile Menu */}
+        {/* Mobile Menu - Full Screen Overlay */}
         <AnimatePresence>
           {menuOpen && (
             <motion.nav
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              className="lg:hidden border-t overflow-hidden"
-              style={{ borderColor: 'var(--color-stone)', backgroundColor: 'var(--color-cream)' }}
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
+              className="lg:hidden"
+              style={{
+                position: 'fixed',
+                top: '80px',
+                left: 0,
+                right: 0,
+                bottom: 0,
+                backgroundColor: 'var(--color-cream)',
+                zIndex: 40,
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: '8px',
+              }}
             >
-              <div className="px-[5%] py-6 space-y-4">
-                {navItems.map((item) => (
-                  item.href.startsWith('/') && !item.href.includes('#') ? (
+              {navItems.map((item, index) => (
+                item.href.startsWith('/') && !item.href.includes('#') ? (
+                  <motion.div
+                    key={item.href}
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: index * 0.08 }}
+                  >
                     <Link
-                      key={item.href}
                       to={item.href}
-                      className="block py-2 text-sm font-semibold tracking-widest"
-                      style={{ color: 'var(--color-text)' }}
+                      onClick={() => setMenuOpen(false)}
+                      style={{
+                        display: 'block',
+                        padding: '14px 32px',
+                        fontSize: '18px',
+                        fontWeight: 600,
+                        letterSpacing: '0.15em',
+                        color: 'var(--color-text)',
+                        textDecoration: 'none',
+                        textAlign: 'center',
+                      }}
                     >
                       {item.label}
                     </Link>
-                  ) : (
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key={item.href}
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: index * 0.08 }}
+                  >
                     <a
-                      key={item.href}
                       href={item.href}
                       onClick={() => setMenuOpen(false)}
-                      className="block py-2 text-sm font-semibold tracking-widest"
-                      style={{ color: 'var(--color-text)' }}
+                      style={{
+                        display: 'block',
+                        padding: '14px 32px',
+                        fontSize: '18px',
+                        fontWeight: 600,
+                        letterSpacing: '0.15em',
+                        color: 'var(--color-text)',
+                        textDecoration: 'none',
+                        textAlign: 'center',
+                      }}
                     >
                       {item.label}
                     </a>
-                  )
-                ))}
-                <Link to="/contact" className="btn-primary inline-block mt-4" onClick={() => setMenuOpen(false)}>
+                  </motion.div>
+                )
+              ))}
+              <motion.div
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: navItems.length * 0.08 }}
+                style={{ marginTop: '16px' }}
+              >
+                <Link to="/contact" className="btn-primary" onClick={() => setMenuOpen(false)}>
                   Get In Touch
                 </Link>
-              </div>
+              </motion.div>
             </motion.nav>
           )}
         </AnimatePresence>
