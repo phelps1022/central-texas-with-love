@@ -181,7 +181,6 @@ function ProductModal({ product, onClose }: {
                             </p>
                             <h2 style={{ fontFamily: "'Fraunces', serif", fontSize: '22px', fontWeight: 600, marginBottom: '4px' }}>{product.name}</h2>
                             <p className="text-accent" style={{ fontSize: '22px', fontWeight: 700, marginBottom: '10px' }}>${product.price}</p>
-                            <p className="text-muted" style={{ marginBottom: '12px', lineHeight: 1.6, fontSize: '14px' }}>{product.description}</p>
                             <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '12px' }}>
                                 {product.tags.map(tag => (
                                     <span key={tag} className="category-tag">{tag}</span>

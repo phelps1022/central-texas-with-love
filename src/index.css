@@ -362,9 +362,37 @@ body {
   font-size: 36px;
   font-weight: 600;
   line-height: 1.1;
-  color: white;
-  margin-bottom: 16px;
-  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+  color: var(--color-text);
+}
+
+/* Shimmer animation on hero text */
+.hero-shimmer {
+  background: linear-gradient(90deg, #0a0a0a 40%, #999 50%, #0a0a0a 60%);
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 5s ease-in-out infinite;
+  padding: 0 0.15em;
+  margin: 0 -0.15em;
+}
+
+.hero-shimmer-accent {
+  background: linear-gradient(90deg, hsl(2, 70%, 55%) 40%, hsl(2, 70%, 65%) 50%, hsl(2, 70%, 55%) 60%);
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 5s ease-in-out infinite;
+  animation-delay: 0.3s;
+  padding: 0 0.15em;
+  margin: 0 -0.15em;
+}
+
+@keyframes shimmer {
+  0% { background-position: 100% 0; }
+  50% { background-position: 0% 0; }
+  100% { background-position: 100% 0; }
 }
 
 .hero-subtitle {

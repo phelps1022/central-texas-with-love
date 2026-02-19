@@ -36,12 +36,12 @@ export default function Home() {
               border: '1px solid hsla(0, 0%, 0%, 0.06)'
             }}
           >
-            <h1 className="hero-title" style={{ color: 'var(--color-forest)', textShadow: 'none', marginBottom: '20px' }}>
-              Central Texas<br />
-              <span style={{ color: 'var(--color-accent)' }}>with Love</span>
+            <h1 className="hero-title" style={{ fontFamily: "'Kaushan Script', cursive", textShadow: 'none', marginBottom: '20px' }}>
+              <span className="hero-shimmer">Central Texas</span><br />
+              <span className="hero-shimmer">with </span><span className="hero-shimmer-accent">Love</span>
             </h1>
             <p className="hero-subtitle" style={{ color: 'var(--color-text-muted)', fontSize: '18px', maxWidth: '440px' }}>
-              Handcrafted in Austin from Texas driftwood, coral stone, and living air plants.
+              Handcrafted in Austin from Texas driftwood, holy rock, and living air plants.
             </p>
           </motion.div>
         </div>
@@ -53,7 +53,7 @@ export default function Home() {
           <div className="grid-4">
             {[
               { num: '01', title: 'Handcrafted', desc: 'Each piece meticulously made by hand' },
-              { num: '02', title: 'Local Materials', desc: 'Sourced from Central Texas waterways' },
+              { num: '02', title: 'Local Materials', desc: 'Sourced from Central Texas' },
               { num: '03', title: 'Living Art', desc: 'Real air plants that thrive' },
               { num: '04', title: 'Made with Love', desc: 'Made in Austin with a 100% love guarantee' },
             ].map((item) => (
@@ -123,9 +123,9 @@ export default function Home() {
           </div>
           <div className="grid-4">
             {[
-              { step: '01', title: 'Source', desc: 'Gathered from Central Texas rivers and coastlines' },
+              { step: '01', title: 'Source', desc: 'Gathered from Central Texas Natural Areas' },
               { step: '02', title: 'Design', desc: 'Thoughtfully arranged compositions' },
-              { step: '03', title: 'Craft', desc: 'Hand-finished with UV elements' },
+              { step: '03', title: 'Craft', desc: 'Carefully handcrafted with customization options' },
               { step: '04', title: 'Deliver', desc: 'Hand-delivered across Austin' },
             ].map((item) => (
               <div key={item.step} style={{ textAlign: 'center' }}>
@@ -251,7 +251,6 @@ function ProductModal({ product, onClose }: {
             </p>
             <h2 style={{ fontFamily: "'Fraunces', serif", fontSize: '22px', fontWeight: 600, marginBottom: '4px' }}>{product.name}</h2>
             <p className="text-accent" style={{ fontSize: '22px', fontWeight: 700, marginBottom: '12px' }}>${product.price}</p>
-            <p className="text-muted" style={{ marginBottom: '16px', lineHeight: 1.6, fontSize: '14px' }}>{product.description}</p>
             <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '16px' }}>
               {product.tags.map((tag: string) => (
                 <span key={tag} className="category-tag">{tag}</span>

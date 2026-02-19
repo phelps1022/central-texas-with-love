@@ -30,7 +30,7 @@ export const categories: Category[] = [
     filterCategory: 'Table Decor'
   },
   {
-    title: 'Backlight',
+    title: 'Black & White',
     slug: 'backlight',
     image: '/images/products/backlight/backlight-01.jpg',
     description: 'Discover the hidden cosmic dimension of UV-reactive art.',
