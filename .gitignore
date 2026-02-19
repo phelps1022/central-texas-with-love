@@ -22,3 +22,22 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Original high-res photos (not needed for the site)
+**/_originals/
+*.heic
+
+# Video files
+public/Video Issues /
+
+# Planning docs (internal only)
+.planning/
+
+# Setup notes
+VERCEL-DNS-SETUP.md
+
+# Environment variables
+.env
+.env.local
+.env.production
+.env*.local
