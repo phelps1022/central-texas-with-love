@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { products, type Product } from '../data/products'
+import { type Product } from '../data/products'
 import { categories } from '../data/categories'
+import { useProductsContext } from '../context/ProductsContext'
 
 export default function Home() {
+  const { featuredProducts } = useProductsContext()
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
 
   return (
@@ -151,7 +153,7 @@ export default function Home() {
             <p className="text-muted" style={{ marginTop: '16px', fontSize: '17px' }}>Each sculpture is a unique testament to nature's artistry.</p>
           </div>
           <div className="grid-3">
-            {products.filter(p => ['u8', 'l5', 'd13', 'd10', 'd6', 'd12'].includes(p.id)).map((item, index) => (
+            {featuredProducts.map((item, index) => (
               <motion.div
                 key={item.id}
                 initial={{ opacity: 0, y: 20 }}
@@ -172,6 +174,11 @@ export default function Home() {
                 </div>
               </motion.div>
             ))}
+          </div>
+          <div style={{ textAlign: 'center', marginTop: '48px' }}>
+            <Link to="/featured" className="btn-secondary">
+              View All Featured Pieces
+            </Link>
           </div>
         </div>
       </section>

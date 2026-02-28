@@ -2,12 +2,12 @@ export interface Product {
   id: string
   name: string
   price: number
-  description: string
+  description?: string
   dimensions: string
   weight: string
   image: string
   category: 'Under $50' | 'Lamps' | 'Table Decor' | 'Backlight' | 'Other'
-  tags: string[]
+  tags?: string[]
 }
 
 export const products: Product[] = [

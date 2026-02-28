@@ -1,9 +1,10 @@
 import { useState, useMemo } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { products, type Product } from '../data/products'
+import { type Product } from '../data/products'
 import { categories } from '../data/categories'
 import { usePageSEO } from '../hooks/usePageSEO'
+import { useProductsContext } from '../context/ProductsContext'
 
 const seoTitles: Record<string, { title: string; description: string }> = {
     'under-50': {
@@ -26,6 +27,7 @@ const seoTitles: Record<string, { title: string; description: string }> = {
 
 export default function CategoryDetail() {
     const { slug } = useParams<{ slug: string }>()
+    const { products } = useProductsContext()
     const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
     const seo = slug ? seoTitles[slug] : null
     usePageSEO({

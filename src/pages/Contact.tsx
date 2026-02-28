@@ -1,19 +1,26 @@
 import { useState, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { getProductById } from '../data/products'
 import { usePageSEO } from '../hooks/usePageSEO'
+import { useProductsContext } from '../context/ProductsContext'
 
 export default function Contact() {
   usePageSEO({
     title: 'Contact — Handmade Art Inquiries & Local Delivery | Central Texas with Love, Austin TX',
     description: 'Get in touch about handcrafted driftwood sculptures, custom orders, or local Austin delivery. $10 minimum delivery, $1/lb anywhere in Austin.',
   })
+  const { getProductById } = useProductsContext()
   const [searchParams] = useSearchParams()
   const pieceId = searchParams.get('piece')
   const product = pieceId ? getProductById(pieceId) : null
 
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [phone, setPhone] = useState('')
   const [subject, setSubject] = useState('General Inquiry')
   const [message, setMessage] = useState('')
+  const [submitting, setSubmitting] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
+  const [submitError, setSubmitError] = useState(false)
 
   useEffect(() => {
     if (product) {
@@ -21,6 +28,38 @@ export default function Contact() {
       setMessage(`Hi! I'm interested in the "${product.name}" piece ($${product.price}). Could you tell me more about availability?`)
     }
   }, [product])
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    if (!name || !email || !message) return
+
+    setSubmitting(true)
+    setSubmitError(false)
+
+    const payload = JSON.stringify({
+      name,
+      email,
+      phone,
+      subject,
+      message,
+      piece: product ? `${product.name} ($${product.price})` : '',
+      timestamp: new Date().toISOString(),
+    })
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: payload,
+      })
+      if (!res.ok) throw new Error(`Contact failed: ${res.status}`)
+      setSubmitted(true)
+    } catch {
+      setSubmitError(true)
+    } finally {
+      setSubmitting(false)
+    }
+  }
 
   return (
     <div style={{ paddingTop: '90px' }}>
@@ -92,46 +131,89 @@ export default function Contact() {
                 </div>
               )}
               <div className="card" style={{ padding: '32px' }}>
-                <h2 className="heading-md" style={{ marginBottom: '28px' }}>Send a Message</h2>
-                <form style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                  <div className="form-name-email" style={{ display: 'grid', gap: '16px' }}>
-                    <div>
-                      <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, marginBottom: '8px' }}>Name</label>
-                      <input type="text" placeholder="Your name" className="input" />
-                    </div>
-                    <div>
-                      <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, marginBottom: '8px' }}>Email</label>
-                      <input type="email" placeholder="your@email.com" className="input" />
-                    </div>
+                {submitted ? (
+                  <div style={{ textAlign: 'center', padding: '40px 0' }}>
+                    <div style={{ fontSize: '48px', marginBottom: '16px' }}>✓</div>
+                    <h2 className="heading-md" style={{ marginBottom: '12px' }}>Message Sent!</h2>
+                    <p className="text-muted">
+                      Thanks {name}! Evan will be in touch soon at {email}.
+                    </p>
                   </div>
-                  <div>
-                    <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, marginBottom: '8px' }}>Phone</label>
-                    <input type="tel" placeholder="(512) 555-1234" className="input" />
-                  </div>
-                  <div>
-                    <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, marginBottom: '8px' }}>Subject</label>
-                    <select className="input" value={subject} onChange={e => setSubject(e.target.value)}>
-                      <option>General Inquiry</option>
-                      <option>Interested in a Piece</option>
-                      <option>Custom Order Request</option>
-                      <option>Delivery Question</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, marginBottom: '8px' }}>Message</label>
-                    <textarea
-                      rows={3}
-                      placeholder="Tell me what you're looking for..."
-                      className="input"
-                      style={{ resize: 'none' }}
-                      value={message}
-                      onChange={e => setMessage(e.target.value)}
-                    />
-                  </div>
-                  <button type="submit" className="btn-primary" style={{ width: '100%' }}>
-                    Send Message
-                  </button>
-                </form>
+                ) : (
+                  <>
+                    <h2 className="heading-md" style={{ marginBottom: '28px' }}>Send a Message</h2>
+                    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                      <div className="form-name-email" style={{ display: 'grid', gap: '16px' }}>
+                        <div>
+                          <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, marginBottom: '8px' }}>Name *</label>
+                          <input
+                            type="text"
+                            placeholder="Your name"
+                            className="input"
+                            required
+                            value={name}
+                            onChange={e => setName(e.target.value)}
+                          />
+                        </div>
+                        <div>
+                          <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, marginBottom: '8px' }}>Email *</label>
+                          <input
+                            type="email"
+                            placeholder="your@email.com"
+                            className="input"
+                            required
+                            value={email}
+                            onChange={e => setEmail(e.target.value)}
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, marginBottom: '8px' }}>Phone</label>
+                        <input
+                          type="tel"
+                          placeholder="(512) 555-1234"
+                          className="input"
+                          value={phone}
+                          onChange={e => setPhone(e.target.value)}
+                        />
+                      </div>
+                      <div>
+                        <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, marginBottom: '8px' }}>Subject</label>
+                        <select className="input" value={subject} onChange={e => setSubject(e.target.value)}>
+                          <option>General Inquiry</option>
+                          <option>Interested in a Piece</option>
+                          <option>Custom Order Request</option>
+                          <option>Delivery Question</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, marginBottom: '8px' }}>Message *</label>
+                        <textarea
+                          rows={3}
+                          placeholder="Tell me what you're looking for..."
+                          className="input"
+                          style={{ resize: 'none' }}
+                          required
+                          value={message}
+                          onChange={e => setMessage(e.target.value)}
+                        />
+                      </div>
+                      {submitError && (
+                        <p style={{ color: '#c0392b', fontSize: '14px' }}>
+                          Something went wrong. Please try again or email evan@centraltexaswithlove.com directly.
+                        </p>
+                      )}
+                      <button
+                        type="submit"
+                        className="btn-primary"
+                        style={{ width: '100%' }}
+                        disabled={submitting}
+                      >
+                        {submitting ? 'Sending...' : 'Send Message'}
+                      </button>
+                    </form>
+                  </>
+                )}
               </div>
             </div>
           </div>

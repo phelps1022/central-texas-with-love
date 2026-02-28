@@ -4,10 +4,13 @@ import { motion, AnimatePresence } from 'framer-motion'
 import Home from './pages/Home'
 import About from './pages/About'
 import Contact from './pages/Contact'
+import Featured from './pages/Featured'
 import CategoryDetail from './pages/CategoryDetail'
+import { ProductsProvider } from './context/ProductsContext'
 
 const navItems = [
   { label: 'ABOUT', href: '/about' },
+  { label: 'FEATURED', href: '/featured' },
   { label: 'SHOP', href: '/#categories' },
   { label: 'CONTACT', href: '/contact' },
 ]
@@ -209,14 +212,17 @@ function Layout({ children }: { children: React.ReactNode }) {
 export default function App() {
   return (
     <BrowserRouter>
-      <Layout>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/category/:slug" element={<CategoryDetail />} />
-        </Routes>
-      </Layout>
+      <ProductsProvider>
+        <Layout>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/featured" element={<Featured />} />
+            <Route path="/category/:slug" element={<CategoryDetail />} />
+          </Routes>
+        </Layout>
+      </ProductsProvider>
     </BrowserRouter>
   )
 }
